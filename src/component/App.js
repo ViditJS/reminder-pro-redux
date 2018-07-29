@@ -4,13 +4,15 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {addReminder, deleteReminder} from '../actions';
 import {bindActionCreators} from 'redux';
+import moment from 'moment'
 class App extends Component {
   state = {
     text: '',
     dueDate: ''
   }
   addReeminder() {
-    this.props.addReminder(this.state.text);
+    // call actions
+    this.props.addReminder(this.state.text, this.state.dueDate);
   }
   deleteReminder(id) {
     this.props.deleteReminder(id);
@@ -23,9 +25,13 @@ class App extends Component {
       <ul className = 'list-group col-sm-4'>
       {
         reminders.map(reminder => {
+          console.log('reminder dueeeee is', reminder);
           return (
             <li key = {reminder.id} className = "list-group-item">
-              <div className="list-item"> {reminder.text} </div>
+              <div className="list-item">
+                <div> {reminder.text} </div>
+                <div> <em>{moment(new Date(reminder.dueDate)).fromNow()}</em> </div>
+               </div>
               <div className="list-item delete-button" onClick={() => {this.deleteReminder(reminder.id)}}>&#x2715;</div>
             </li>
           )
